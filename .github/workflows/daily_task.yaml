@@ -29,4 +29,4 @@ jobs:
         run: |
           cd ./linux-x64
           # 把 secret 内容当成额外参数追加
-          ./Ray.BiliBiliTool.Console.dll ${{ vars.ARGV }} --cookieStr1=${{secrets.cookies}}
+          ./Ray.BiliBiliTool.Console ${{ vars.ARGV }} --cookieStr1=${{secrets.cookies}}
