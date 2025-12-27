@@ -17,8 +17,8 @@ jobs:
       - name: download tool
         run: |
           wget -q https://github.com/RayWangQvQ/BiliBiliToolPro/releases/download/0.3.1/bilibili-tool-pro-v0.3.1-linux-x64.zip
-          unzip -q bilibili-tool-pro-v0.3.1-linux-x64.zip -d ./tool
-          chmod +x ./tool/Ray.BiliBiliTool.Console
+          unzip -q bilibili-tool-pro-v0.3.1-linux-x64.zip
+          chmod +x linux-x64/Ray.BiliBiliTool.Console
 
       # 2. 复制默认配置（非敏感部分）
       - name: copy base config
@@ -27,6 +27,6 @@ jobs:
       # 3. 直接展开 ARGV 运行（整行当参数）
       - name: run with argv
         run: |
-          cd ./tool
+          cd ./linux-x64
           # 把 secret 内容当成额外参数追加
           ./Ray.BiliBiliTool.Console.dll ${{ vars.ARGV }} --cookieStr1=${{secrets.cookies}}
