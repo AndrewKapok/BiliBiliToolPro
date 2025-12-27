@@ -1,0 +1,32 @@
+name: bilibili-daily-argv
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "37 0 * * 1-5" # 工作日 08:37 北京时间
+    - cron: "34 2 * * 0,6" # 周末  10:34 北京时间
+
+jobs:
+  daily:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      # 1. 下载并解压
+      - name: download tool
+        run: |
+          wget -q https://github.com/RayWangQvQ/BiliBiliToolPro/releases/download/0.3.1/bilibili-tool-pro-v0.3.1-linux-x64.zip
+          unzip -q bilibili-tool-pro-v0.3.1-linux-x64.zip -d ./tool
+          chmod +x ./tool/Ray.BiliBiliTool.Console
+
+      # 2. 复制默认配置（非敏感部分）
+      - name: copy base config
+        run: cp ${{ github.workspace }}/config/appsettings.json ./appsettings.json
+
+      # 3. 直接展开 ARGV 运行（整行当参数）
+      - name: run with argv
+        run: |
+          cd ./tool
+          # 把 secret 内容当成额外参数追加
+          ./Ray.BiliBiliTool.Console.dll ${{ vars.ARGV }} --cookieStr1=${{secrets.cookies}}
