@@ -31,4 +31,4 @@ jobs:
           pwd
           ls -l
           # 把 secret 内容当成额外参数追加
-          ./Ray.BiliBiliTool.Console ${{ vars.ARGV }} --cookieStr1=${{secrets.cookies}}
+          ./Ray.BiliBiliTool.Console --randomSleep=0 --cookieStr1=${{secrets.cookies}}
