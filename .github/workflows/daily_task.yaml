@@ -28,5 +28,7 @@ jobs:
       - name: run with argv
         run: |
           cd ./linux-x64
+          pwd
+          ls -l
           # 把 secret 内容当成额外参数追加
           ./Ray.BiliBiliTool.Console ${{ vars.ARGV }} --cookieStr1=${{secrets.cookies}}
