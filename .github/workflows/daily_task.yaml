@@ -24,7 +24,7 @@ jobs:
 
       # 2. 复制默认配置（非敏感部分）
       - name: copy base config
-        run: cp ${{ github.workspace }}/config/appsettings.json ./appsettings.json
+        run: cp ./config/appsettings.json ./linux-x64/appsettings.json
 
       # 3. 直接展开 ARGV 运行（整行当参数）
       - name: run with argv
