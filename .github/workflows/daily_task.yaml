@@ -23,15 +23,33 @@ jobs:
           Expand-Archive -Path "tool.zip" -DestinationPath "." -Force
           # 删除可能存在的配置文件（避免冲突）
           Remove-Item -Path "win-x64/appsettings*.json" -ErrorAction SilentlyContinue
+<<<<<<< HEAD
+=======
+          # 列出文件验证
+          Get-ChildItem -Path "win-x64" | Select-Object Name, Length
+>>>>>>> 995b71d11f6da3facf0276510e11aad38e97d4f2
 
       # 2. 复制默认配置到程序目录
       - name: copy base config
         shell: pwsh
         run: |
           Copy-Item -Path "./config/appsettings.json" -Destination "./win-x64/appsettings.json" -Force
+<<<<<<< HEAD
+=======
+          Write-Host "✅ Config copied to win-x64/"
+>>>>>>> 995b71d11f6da3facf0276510e11aad38e97d4f2
 
       # 3. 运行程序（Windows 使用 .exe）
       - name: run with argv
         shell: pwsh
         run: |
+<<<<<<< HEAD
           .\Ray.BiliBiliTool.Console.exe --cookieStr1="${{secrets.cookies}}"
+=======
+          Set-Location "./win-x64"
+          Get-Location
+          # 显示文件列表验证
+          Get-ChildItem *.exe, *.dll, *.json | Select-Object Name, Length
+          # 运行 Windows 可执行文件
+          .\Ray.BiliBiliTool.Console.exe --randomSleep=0 --cookieStr1="${{secrets.cookies}}"
+>>>>>>> 995b71d11f6da3facf0276510e11aad38e97d4f2
