@@ -19,6 +19,8 @@ jobs:
           wget -q https://github.com/RayWangQvQ/BiliBiliToolPro/releases/download/0.3.1/bilibili-tool-pro-v0.3.1-linux-x64.zip
           unzip -q bilibili-tool-pro-v0.3.1-linux-x64.zip
           chmod +x linux-x64/Ray.BiliBiliTool.Console
+          rm -f appsettings.Development.json appsettings.Production.json appsettings.json
+          ls -l
 
       # 2. 复制默认配置（非敏感部分）
       - name: copy base config
