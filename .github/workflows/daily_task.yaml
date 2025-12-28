@@ -8,29 +8,38 @@ on:
 
 jobs:
   daily:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - name: checkout
         uses: actions/checkout@v4
 
-      # 1. 下载并解压
+      # 1. 下载并解压（Windows 版本）
       - name: download tool
+        shell: pwsh
         run: |
-          wget -q https://github.com/RayWangQvQ/BiliBiliToolPro/releases/download/0.3.1/bilibili-tool-pro-v0.3.1-linux-x64.zip
-          unzip -q bilibili-tool-pro-v0.3.1-linux-x64.zip
-          chmod +x linux-x64/Ray.BiliBiliTool.Console
-          rm -f appsettings.Development.json appsettings.Production.json appsettings.json
-          ls -l
+          # 下载 Windows 版本的压缩包
+          Invoke-WebRequest -Uri "https://github.com/RayWangQvQ/BiliBiliToolPro/releases/download/3.8.1/bilibili-tool-pro-v3.8.1-win-x64.zip" -OutFile "tool.zip"
+          # 解压到当前目录
+          Expand-Archive -Path "tool.zip" -DestinationPath "." -Force
+          # 删除可能存在的配置文件（避免冲突）
+          Remove-Item -Path "win-x64/appsettings*.json" -ErrorAction SilentlyContinue
+          # 列出文件验证
+          Get-ChildItem -Path "win-x64" | Select-Object Name, Length
 
-      # 2. 复制默认配置（非敏感部分）
+      # 2. 复制默认配置到程序目录
       - name: copy base config
-        run: cp ./config/appsettings.json ./linux-x64/appsettings.json
-
-      # 3. 直接展开 ARGV 运行（整行当参数）
-      - name: run with argv
+        shell: pwsh
         run: |
-          cd ./linux-x64
-          pwd
-          ls -l
-          # 把 secret 内容当成额外参数追加
-          ./Ray.BiliBiliTool.Console --randomSleep=0 --cookieStr1=${{secrets.cookies}}
+          Copy-Item -Path "./config/appsettings.json" -Destination "./win-x64/appsettings.json" -Force
+          Write-Host "✅ Config copied to win-x64/"
+
+      # 3. 运行程序（Windows 使用 .exe）
+      - name: run with argv
+        shell: pwsh
+        run: |
+          Set-Location "./win-x64"
+          Get-Location
+          # 显示文件列表验证
+          Get-ChildItem *.exe, *.dll, *.json | Select-Object Name, Length
+          # 运行 Windows 可执行文件
+          .\Ray.BiliBiliTool.Console.exe --randomSleep=0 --cookieStr1="${{secrets.cookies}}"
