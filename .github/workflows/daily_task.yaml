@@ -37,4 +37,4 @@ jobs:
         run: |
           Set-Location "./win-x64"
           # 运行 Windows 可执行文件
-          .\Ray.BiliBiliTool.Console.exe --cookieStr1="${{secrets.cookies}}"
+          .\Ray.BiliBiliTool.Console.exe --cookieStr1="${{secrets.cookies}}" ${{ var.ARGV }}
